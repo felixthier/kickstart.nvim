@@ -92,12 +92,10 @@ vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
-
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
-
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -257,7 +255,29 @@ require('lazy').setup({
       },
     },
   },
+  {
+    'theprimeagen/harpoon',
+    config = function()
+      local mark = require 'harpoon.mark'
+      local ui = require 'harpoon.ui'
 
+      vim.keymap.set('n', '<leader>a', mark.add_file)
+      vim.keymap.set('n', '<C-e>', ui.toggle_quick_menu)
+
+      vim.keymap.set('n', '<C-h>', function()
+        ui.nav_file(1)
+      end)
+      vim.keymap.set('n', '<C-t>', function()
+        ui.nav_file(2)
+      end)
+      vim.keymap.set('n', '<C-n>', function()
+        ui.nav_file(3)
+      end)
+      vim.keymap.set('n', '<C-s>', function()
+        ui.nav_file(4)
+      end)
+    end,
+  },
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -320,6 +340,62 @@ require('lazy').setup({
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      {
+        'zbirenbaum/copilot.lua',
+        cmd = 'Copilot',
+        event = 'InsertEnter',
+        config = function()
+          require('copilot').setup {
+            panel = {
+              enabled = false,
+              auto_refresh = false,
+              keymap = {
+                jump_prev = '[[',
+                jump_next = ']]',
+                accept = '<M-1>',
+                refresh = 'gr',
+                open = '<M-CR>',
+              },
+              layout = {
+                position = 'bottom', -- | top | left | right
+                ratio = 0.4,
+              },
+            },
+            suggestion = {
+              enabled = true,
+              auto_trigger = true,
+              debounce = 75,
+              keymap = {
+                accept = '<M-1>',
+                accept_word = false,
+                accept_line = false,
+                next = '<M-2>',
+                prev = '<M-3>',
+                dismiss = '<C-ESC>',
+              },
+            },
+            filetypes = {
+              yaml = false,
+              markdown = true,
+              help = false,
+              gitcommit = false,
+              gitrebase = false,
+              hgcommit = false,
+              svn = false,
+              cvs = false,
+              ['.'] = false,
+            },
+            copilot_node_command = 'node', -- Node.js version must be > 18.x
+            server_opts_overrides = {},
+          }
+        end,
+      },
+      {
+        'zbirenbaum/copilot-cmp',
+        config = function()
+          require('copilot_cmp').setup()
+        end,
+      },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -550,7 +626,61 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
-
+        rust_analyzer = {
+          capabilities = capabilities,
+          settings = {
+            ['rust-analyzer'] = {
+              assist = {
+                importMergeBehavior = 'last',
+                importPrefix = 'by_self',
+              },
+              cargo = {
+                loadOutDirsFromCheck = true,
+              },
+              procMacro = {
+                enable = true,
+              },
+            },
+          },
+        },
+        pyright = {
+          capabilities = capabilities,
+          settings = {
+            python = {
+              analysis = {
+                autoSearchPaths = true,
+                diagnosticMode = 'workspace',
+                useLibraryCodeForTypes = true,
+              },
+            },
+          },
+        },
+        r_language_server = {
+          capabilities = capabilities,
+          settings = {
+            R = {
+              rpath = '/usr/bin/R',
+              runtime = '/usr/bin/R',
+              r_args = '--no-save --slave',
+              r_quiet = false,
+              r_env = 0,
+              r_library_user = '~/R/x86_64-pc-linux-gnu-library/4.1',
+              r_library = '/usr/lib/R/library',
+              debug = false,
+            },
+          },
+        },
+        gopls = {
+          capabilities = capabilities,
+          settings = {
+            gopls = {
+              analyses = {
+                unusedparams = true,
+              },
+              staticcheck = true,
+            },
+          },
+        },
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -680,9 +810,9 @@ require('lazy').setup({
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
           -- Select the [n]ext item
-          ['<C-n>'] = cmp.mapping.select_next_item(),
+          ['<M-n>'] = cmp.mapping.select_next_item(),
           -- Select the [p]revious item
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<M-p>'] = cmp.mapping.select_prev_item(),
 
           -- Scroll the documentation window [b]ack / [f]orward
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -691,7 +821,7 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
+          ['<M-1>'] = cmp.mapping.confirm { select = true },
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -721,6 +851,9 @@ require('lazy').setup({
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
         sources = {
+          -- Copilot Source
+          { name = 'copilot' }, --, group_index = 2 },
+          -- Other Sources
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
