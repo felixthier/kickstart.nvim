@@ -159,6 +159,9 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- Set semicolon key to also open command line
+vim.keymap.set('n', ';', ':', {})
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
@@ -261,21 +264,21 @@ require('lazy').setup({
       local mark = require 'harpoon.mark'
       local ui = require 'harpoon.ui'
 
-      vim.keymap.set('n', '<leader>a', mark.add_file)
-      vim.keymap.set('n', '<C-e>', ui.toggle_quick_menu)
+      vim.keymap.set('n', '<leader>a', mark.add_file, { desc = '[a]dd file to harpoon list' })
+      vim.keymap.set('n', '<C-e>', ui.toggle_quick_menu, { desc = 'toggle harpoon [e]xplorer (harpooned file list)' })
 
       vim.keymap.set('n', '<C-h>', function()
         ui.nav_file(1)
-      end)
+      end, { desc = 'navigate to harpooned file 1' })
       vim.keymap.set('n', '<C-t>', function()
         ui.nav_file(2)
-      end)
+      end, { desc = 'navigate to harpooned file 2' })
       vim.keymap.set('n', '<C-n>', function()
         ui.nav_file(3)
-      end)
+      end, { desc = 'navigate to harpooned file 3' })
       vim.keymap.set('n', '<C-s>', function()
         ui.nav_file(4)
-      end)
+      end, { desc = 'navigate to harpooned file 4' })
     end,
   },
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -994,3 +997,4 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+vim.keymap.set('n', '<leader>pv', vim.cmd.Ex, { desc = 'Open Ntree' })
