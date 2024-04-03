@@ -715,6 +715,10 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'ast-grep',
         'black',
+        'isort',
+        'prettier',
+        'prettierd',
+        'r-languageserver',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -750,12 +754,12 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         python = { 'black', 'isort' },
+        javascript = { { 'prettierd', 'prettier' } },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
       },
     },
   },
