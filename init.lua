@@ -1071,3 +1071,10 @@ require('lazy').setup({
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 vim.keymap.set('n', '<leader>pv', vim.cmd.Ex, { desc = 'Open Ntree' })
+
+-- config for UndoTree
+-- keymaps
+vim.keymap.set('n', '<leader>U', vim.cmd.UndotreeToggle, { desc = 'Open Undotree' })
+-- config
+vim.g.undotree_SetFocusWhenToggle = 1
+vim.g.undotree_HighlightChangedText = 1
