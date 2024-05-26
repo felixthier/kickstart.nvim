@@ -344,62 +344,6 @@ require('lazy').setup({
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
-      {
-        'zbirenbaum/copilot.lua',
-        cmd = 'Copilot',
-        event = 'InsertEnter',
-        config = function()
-          require('copilot').setup {
-            panel = {
-              enabled = false,
-              auto_refresh = false,
-              keymap = {
-                jump_prev = '[[',
-                jump_next = ']]',
-                accept = '<M-1>',
-                refresh = 'gr',
-                open = '<M-CR>',
-              },
-              layout = {
-                position = 'bottom', -- | top | left | right
-                ratio = 0.4,
-              },
-            },
-            suggestion = {
-              enabled = true,
-              auto_trigger = true,
-              debounce = 75,
-              keymap = {
-                accept = '<M-1>',
-                accept_word = false,
-                accept_line = false,
-                next = '<M-2>',
-                prev = '<M-3>',
-                dismiss = '<C-ESC>',
-              },
-            },
-            filetypes = {
-              yaml = false,
-              markdown = true,
-              help = false,
-              gitcommit = false,
-              gitrebase = false,
-              hgcommit = false,
-              svn = false,
-              cvs = false,
-              ['.'] = false,
-            },
-            copilot_node_command = 'node', -- Node.js version must be > 18.x
-            server_opts_overrides = {},
-          }
-        end,
-      },
-      {
-        'zbirenbaum/copilot-cmp',
-        config = function()
-          require('copilot_cmp').setup()
-        end,
-      },
     },
 
     config = function()
@@ -1019,7 +963,68 @@ require('lazy').setup({
       end,
     },
   },
-
+  {
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
+    config = function()
+      require('copilot').setup {
+        panel = {
+          enabled = false,
+          auto_refresh = false,
+          keymap = {
+            jump_prev = '[[',
+            jump_next = ']]',
+            accept = '<M-1>',
+            refresh = 'gr',
+            open = '<M-CR>',
+          },
+          layout = {
+            position = 'bottom', -- | top | left | right
+            ratio = 0.4,
+          },
+        },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          debounce = 75,
+          keymap = {
+            accept = '<M-1>',
+            accept_word = false,
+            accept_line = false,
+            next = '<M-2>',
+            prev = '<M-3>',
+            dismiss = '<C-ESC>',
+          },
+        },
+        filetypes = {
+          yaml = false,
+          markdown = true,
+          help = false,
+          gitcommit = false,
+          gitrebase = false,
+          hgcommit = false,
+          svn = false,
+          cvs = false,
+          ['.'] = false,
+        },
+        copilot_node_command = 'node', -- Node.js version must be > 18.x
+        server_opts_overrides = {},
+      }
+    end,
+  },
+  {
+    'zbirenbaum/copilot-cmp',
+    config = function()
+      require('copilot_cmp').setup()
+    end,
+  },
+  {
+    'tpope/vim-fugitive',
+  },
+  {
+    'mbbill/undotree',
+  },
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
