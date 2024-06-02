@@ -1079,3 +1079,7 @@ vim.keymap.set('n', '<leader>U', vim.cmd.UndotreeToggle, { desc = 'Open Undotree
 -- config
 vim.g.undotree_SetFocusWhenToggle = 1
 vim.g.undotree_HighlightChangedText = 1
+
+-- set tabstop width
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
