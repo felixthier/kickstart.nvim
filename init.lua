@@ -630,6 +630,14 @@ require('lazy').setup({
             },
           },
         },
+        templ = {
+          capabilities = capabilities,
+          settings = {
+            templ = {
+              gofumpt = true,
+            },
+          },
+        },
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -1083,3 +1091,9 @@ vim.g.undotree_HighlightChangedText = 1
 -- set tabstop width
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
+
+vim.filetype.add {
+  extension = {
+    templ = 'templ',
+  },
+}
